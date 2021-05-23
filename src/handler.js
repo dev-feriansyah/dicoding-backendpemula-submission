@@ -185,9 +185,29 @@ const editBookByIdHandler = (request, h) => {
     .code(404);
 };
 
+const deleteBookByIdHandler = (request, h) => {
+  const { bookId } = request.params;
+  const book = Book.deleteBookById(bookId);
+
+  if (book !== undefined) {
+    return {
+      status: 'success',
+      message: 'Buku berhasil dihapus',
+    };
+  }
+
+  return h
+    .response({
+      status: 'fail',
+      message: 'Buku gagal dihapus. Id tidak ditemukan',
+    })
+    .code(404);
+};
+
 module.exports = {
   addBooksHandler,
   getAllBooksHandler,
   getBookByIdHandler,
   editBookByIdHandler,
+  deleteBookByIdHandler,
 };

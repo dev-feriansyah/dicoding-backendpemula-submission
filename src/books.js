@@ -44,6 +44,13 @@ const Book = {
 
     return books[bookIndex];
   },
+
+  deleteBookById(id) {
+    const bookIndex = this.findIndexBook(id);
+    if (bookIndex === -1) return undefined;
+
+    return this.books.splice(bookIndex, 1);
+  },
 };
 
 module.exports = Book;
