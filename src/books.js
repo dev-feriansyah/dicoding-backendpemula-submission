@@ -1,21 +1,26 @@
-const fs = require('fs');
-const booksData = require('../books.json');
-
 const Book = {
-  books: booksData || [],
+  books: [],
 
   addBook(newBook) {
     this.books.push(newBook);
-    this.updateJSON();
 
     return this.books.filter((book) => book.id === newBook.id).length > 0;
   },
 
-  updateJSON() {
-    const books = JSON.stringify(this.books, null, 2);
-    fs.writeFile('books.json', books, (err) => {
-      if (err) throw err;
+  getBooks(filterData) {
+    // Get All Books
+    if (Object.keys(filterData).length === 0) return this.books;
+
+    // Get Filtered Book
+    const { filter, value } = filterData;
+    const filteredBook = this.books.filter((book) => {
+      // filter Name
+      if (filter === 'name') return book.name.toLowerCase().includes(value.toLowerCase());
+
+      return book[filter] === value;
     });
+    // If not found, return empty array
+    return filteredBook === undefined ? [] : filteredBook;
   },
 };
 

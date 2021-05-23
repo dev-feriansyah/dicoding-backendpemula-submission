@@ -74,4 +74,25 @@ const addBooksHandler = (request, h) => {
     .code(500);
 };
 
-module.exports = { addBooksHandler };
+const getAllBooksHandler = (request) => {
+  const { name, reading, finished } = request.query;
+
+  let filterData = {};
+
+  if (name !== undefined) filterData = { filter: 'name', value: String(name) };
+  if (reading !== undefined) filterData = { filter: 'reading', value: Boolean(Number(reading)) };
+  if (finished !== undefined) filterData = { filter: 'finished', value: Boolean(Number(finished)) };
+
+  const books = Book.getBooks(filterData).map((book) => ({
+    id: book.id,
+    name: book.name,
+    publisher: book.publisher,
+  }));
+
+  return {
+    status: 'success',
+    data: { books },
+  };
+};
+
+module.exports = { addBooksHandler, getAllBooksHandler };
