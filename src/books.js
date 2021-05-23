@@ -28,6 +28,22 @@ const Book = {
   findBookById(id) {
     return this.books.find((book) => book.id === id);
   },
+
+  findIndexBook(id) {
+    return this.books.findIndex((book) => book.id === id);
+  },
+
+  updateBook(id, updatedBook) {
+    const bookIndex = this.findIndexBook(id);
+    if (bookIndex === -1) return undefined;
+    const { books } = this;
+    books[bookIndex] = {
+      ...books[bookIndex],
+      ...updatedBook,
+    };
+
+    return books[bookIndex];
+  },
 };
 
 module.exports = Book;
