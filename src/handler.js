@@ -79,9 +79,15 @@ const getAllBooksHandler = (request) => {
 
   let filterData = {};
 
-  if (name !== undefined) filterData = { filter: 'name', value: String(name) };
-  if (reading !== undefined) filterData = { filter: 'reading', value: Boolean(Number(reading)) };
-  if (finished !== undefined) filterData = { filter: 'finished', value: Boolean(Number(finished)) };
+  if (name !== undefined) {
+    filterData = { filter: 'name', value: String(name) };
+  }
+  if (reading !== undefined) {
+    filterData = { filter: 'reading', value: Boolean(Number(reading)) };
+  }
+  if (finished !== undefined) {
+    filterData = { filter: 'finished', value: Boolean(Number(finished)) };
+  }
 
   const books = Book.getBooks(filterData).map((book) => ({
     id: book.id,
@@ -95,4 +101,24 @@ const getAllBooksHandler = (request) => {
   };
 };
 
-module.exports = { addBooksHandler, getAllBooksHandler };
+const getBookByIdHandler = (request, h) => {
+  const { bookId } = request.params;
+
+  const book = Book.findBookById(bookId);
+
+  if (book !== undefined) {
+    return {
+      status: 'success',
+      data: { book },
+    };
+  }
+
+  return h
+    .response({
+      status: 'fail',
+      message: 'Buku tidak ditemukan',
+    })
+    .code(404);
+};
+
+module.exports = { addBooksHandler, getAllBooksHandler, getBookByIdHandler };

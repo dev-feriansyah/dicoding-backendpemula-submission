@@ -15,12 +15,18 @@ const Book = {
     const { filter, value } = filterData;
     const filteredBook = this.books.filter((book) => {
       // filter Name
-      if (filter === 'name') return book.name.toLowerCase().includes(value.toLowerCase());
+      if (filter === 'name') {
+        return book.name.toLowerCase().includes(value.toLowerCase());
+      }
 
       return book[filter] === value;
     });
     // If not found, return empty array
     return filteredBook === undefined ? [] : filteredBook;
+  },
+
+  findBookById(id) {
+    return this.books.find((book) => book.id === id);
   },
 };
 
